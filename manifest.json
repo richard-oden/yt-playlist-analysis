@@ -5,5 +5,15 @@
     "version": "1.0",
     "action": {
         "default_popup": "popup.html"
-    }
+    },
+    "content_scripts": [
+        {
+            "js": ["scripts/video_content.js"],
+            "matches": ["https://www.youtube.com/watch?v=*list=*"]
+        },
+        {
+            "js": ["scripts/playlist_content.js"],
+            "matches": ["https://www.youtube.com/playlist?list=*"]
+        }
+    ]
 }
