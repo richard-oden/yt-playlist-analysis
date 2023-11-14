@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "YT Playlist Time Remaining",
-    "description": "Tells you the time remaining to finish watching a playlist.",
+    "name": "YT Playlist Analysis",
+    "description": "A set of tools for analyzing playlists.",
     "version": "1.0",
     "action": {
         "default_popup": "popup.html"
@@ -9,7 +9,7 @@
     "content_scripts": [
         {
             "js": ["scripts/video_content.js"],
-            "matches": ["https://www.youtube.com/watch?v=*list=*"]
+            "matches": ["https://www.youtube.com/watch?v=*&list=*"]
         },
         {
             "js": ["scripts/playlist_content.js"],

@@ -17,16 +17,30 @@ const getUnwatchedVideoDurationInSeconds = () => {
     Array.from(document.querySelectorAll('ytd-thumbnail')).map(thumbnail => {
         const timeStatus = thumbnail.querySelector('#time-status');
     
-        if (!timeStatus)
+        if (!timeStatus) {
+            console.error('[YT Playlist Analysis] Time status was not found for thumbnail: ', thumbnail)
             return 0;
-    
+        }
+
         const duration = getVideoDurationInSeconds(timeStatus);
         const progress = thumbnail.querySelector('ytd-thumbnail-overlay-resume-playback-renderer #progress');
     
         if (!progress)
             return duration;
 
-        const progressFloat = 0;
+        const percentageWatched = progress.style.width.replace('%', '').trim();
+
+        if (isNaN(percentageWatched)) {
+            console.error('[YT Playlist Analysis] Watched percentage is non-numeric: ', percentageWatched)
+            return duration;
+        }
+
+        const unwatchedFloat = 1 - (Number(percentageWatched) / 100); 
+
+        if (unwatchedFloat > 1 || unwatchedFloat < 0) {
+            console.error('[YT Playlist Analysis] Unwatched float is out of range: ', unwatchedFloat)
+            return duration;
+        }
     
     }).reduce((a, b) => a + b, 0) 
 };
