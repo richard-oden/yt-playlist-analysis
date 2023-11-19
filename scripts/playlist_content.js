@@ -41,8 +41,29 @@ const getUnwatchedVideoDurationInSeconds = () => {
             console.error('[YT Playlist Analysis] Unwatched float is out of range: ', unwatchedFloat)
             return duration;
         }
-    
+        
+        return unwatchedFloat * duration;
     }).reduce((a, b) => a + b, 0) 
 };
 
+const getRemainingWatchTime = playbackSpeed => {
+    const remainingSeconds = getUnwatchedVideoDurationInSeconds() * playbackSpeed;
+    const hours = Math.floor(remainingSeconds / 3600);
+    const hoursRemainder = remainingSeconds % 3600;
+    const minutes = Math.floor(hoursRemainder / 60);
+    const seconds = hoursRemainder % 60;
+
+    let watchTime = '';
+
+    if (hours > 0)
+        watchTime += `${hours} hr `;
+
+    if (minutes > 0)
+        watchTime += `${minutes} min `;
+
+    if (seconds > 1)
+        watchTime += `${seconds} sec`;
+
+    return watchTime;
+};
 // / 3600;
