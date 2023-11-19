@@ -1,20 +1,20 @@
-const getVideoDurationInSeconds = timeStatus => {
-    const array = timeStatus.textContent.trim().split(':');
-
-    if (array.some(_ => isNaN(_)))
-        return 0;
-
-    if (array.length === 3)
-        return (parseInt(array[0]) * 3600) + (parseInt(array[1]) * 60) + parseInt(array[2]);
-
-    if (array.length == 2)
-        return (parseInt(array[0]) * 60) + parseInt(array[1]);
-
-    return parseInt(array[0]);
-};
-
 function getUnwatchedVideoDurationInSeconds() {
-    Array.from(document.querySelectorAll('ytd-playlist-video-list-renderer ytd-thumbnail')).map(thumbnail => {
+    const getVideoDurationInSeconds = timeStatus => {
+        const array = timeStatus.textContent.trim().split(':');
+    
+        if (array.some(_ => isNaN(_)))
+            return 0;
+    
+        if (array.length === 3)
+            return (parseInt(array[0]) * 3600) + (parseInt(array[1]) * 60) + parseInt(array[2]);
+    
+        if (array.length == 2)
+            return (parseInt(array[0]) * 60) + parseInt(array[1]);
+    
+        return parseInt(array[0]);
+    };
+
+    return Array.from(document.querySelectorAll('ytd-playlist-video-list-renderer ytd-thumbnail')).map(thumbnail => {
         const timeStatus = thumbnail.querySelector('#time-status');
     
         if (!timeStatus) {
@@ -46,8 +46,8 @@ function getUnwatchedVideoDurationInSeconds() {
     }).reduce((a, b) => a + b, 0) 
 };
 
-const getRemainingWatchTime = playbackSpeed => {
-    const remainingSeconds = getUnwatchedVideoDurationInSeconds() * playbackSpeed;
+const getRemainingWatchTime = (unwatchedVideoDurationInSeconds, playbackSpeed) => {
+    const remainingSeconds = unwatchedVideoDurationInSeconds * playbackSpeed;
     const hours = Math.floor(remainingSeconds / 3600);
     const hoursRemainder = remainingSeconds % 3600;
     const minutes = Math.floor(hoursRemainder / 60);
@@ -67,22 +67,24 @@ const getRemainingWatchTime = playbackSpeed => {
     return watchTime;
 };
 
+const playbackSpeedSelect = document.querySelector('#ytpa_playback-speed');
+
 const displayRemainingWatchTime = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
         chrome.scripting.executeScript({
             target: { tabId: tabs[0].id },
-            func: () => getUnwatchedVideoDurationInSeconds
+            func: getUnwatchedVideoDurationInSeconds
         }).then(injectionResults => {
             document.querySelector('#ytpa_time-remaining')
-                .textContent = getRemainingWatchTime(injectionResults[0].result);
+                .textContent = getRemainingWatchTime(injectionResults[0].result, playbackSpeedSelect.value);
         });
     });
 };
 
-const playbackSpeedSelect = document.querySelector('#ytpa_playback-speed');
-
-displayRemainingWatchTime();
-
-playbackSpeedSelect.addEventListener('change', () => {
+document.addEventListener('DOMContentLoaded', () => {
     displayRemainingWatchTime();
+
+    playbackSpeedSelect.addEventListener('change', () => {
+        displayRemainingWatchTime();
+    }); 
 });
