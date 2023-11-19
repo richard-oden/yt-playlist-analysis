@@ -14,7 +14,7 @@ const getVideoDurationInSeconds = timeStatus => {
 };
 
 const getUnwatchedVideoDurationInSeconds = () => {
-    Array.from(document.querySelectorAll('ytd-thumbnail')).map(thumbnail => {
+    Array.from(document.querySelectorAll('ytd-playlist-video-list-renderer ytd-thumbnail')).map(thumbnail => {
         const timeStatus = thumbnail.querySelector('#time-status');
     
         if (!timeStatus) {
@@ -66,4 +66,3 @@ const getRemainingWatchTime = playbackSpeed => {
 
     return watchTime;
 };
-// / 3600;
