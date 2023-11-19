@@ -15,5 +15,6 @@
             "js": ["scripts/playlist_content.js"],
             "matches": ["https://www.youtube.com/playlist?list=*"]
         }
-    ]
+    ],
+    "permissions": ["scripting", "activeTab"]
 }
