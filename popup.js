@@ -62,12 +62,12 @@ const getRemainingWatchTime = (unwatchedVideoDurationInSeconds, playbackSpeed) =
         watchTime += `${minutes} min `;
 
     if (seconds > 1)
-        watchTime += `${seconds} sec`;
+        watchTime += `${Math.round(seconds)} sec`;
 
     return watchTime;
 };
 
-const playbackSpeedSelect = document.querySelector('#ytpa_playback-speed');
+const playbackSpeedSelect = document.querySelector('#playback-speed');
 
 const displayRemainingWatchTime = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
@@ -75,7 +75,7 @@ const displayRemainingWatchTime = () => {
             target: { tabId: tabs[0].id },
             func: getUnwatchedVideoDurationInSeconds
         }).then(injectionResults => {
-            document.querySelector('#ytpa_time-remaining')
+            document.querySelector('#time-remaining')
                 .textContent = getRemainingWatchTime(injectionResults[0].result, playbackSpeedSelect.value);
         });
     });

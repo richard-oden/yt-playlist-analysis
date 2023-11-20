@@ -1,16 +1,31 @@
 <html>
+  <style>
+    /* body {
+      display: flex;
+    } */
+
+    #time-remaining {
+      width: max-content;
+    }
+
+    #playback-speed {
+      width: 100%;
+    }
+  </style>
   <body>
-    <div id="ytpa_time-remaining"></span>
-    <select id="ytpa_playback-speed">
-      <option value="0.25">0.25x</option>
-      <option value="0.5">0.5x</option>
-      <option value="0.75">0.75x</option>
-      <option value="1" selected>normal</option>
-      <option value="1.25">1.25x</option>
-      <option value="1.5">1.5x</option>
-      <option value="1.75">1.75x</option>
-      <option value="2">2x</option>
-    </select>
-    <script src="popup.js?v=2"></script>
+    <div id="time-remaining"></div>
+    <div>
+      <select id="playback-speed">
+        <option value="4">0.25x</option>
+        <option value="2">0.5x</option>
+        <option value="1.3333">0.75x</option>
+        <option value="1" selected>normal</option>
+        <option value=".8">1.25x</option>
+        <option value=".6667">1.5x</option>
+        <option value=".5714">1.75x</option>
+        <option value=".5">2x</option>
+      </select>
+    </div>
+    <script src="popup.js?v=3"></script>
   </body>
 </html>
